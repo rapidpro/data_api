@@ -37,6 +37,7 @@ def fail():
 
 @task
 def success():
+    print("Sending mail")
     send_mail('celery task success', 'the celery task sent this email',
               from_email=settings.EMAIL_HOST_USER,
               recipient_list=['cory.zue@gmail.com'])
