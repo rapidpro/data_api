@@ -19,8 +19,9 @@ def setup_periodic_tasks(sender, **kwargs):
         traceback.print_exc()
         sys.exit()
 
-    seconds_in_a_week = 60*60*24*7
-    update_interval = int(os.environ.get('FETCH_INTERVAL', seconds_in_a_week))
+    # seconds_in_a_week = 60*60*24*7
+    seconds_in_a_day = 60*60*24
+    update_interval = int(os.environ.get('FETCH_INTERVAL', seconds_in_a_day))
     sender.add_periodic_task(update_interval, sync_latest_data.s(),
                              name='Sync data from RapidPRO every {} seconds'.format(update_interval))
     sender.add_periodic_task(5, fail.s(), name='fail')

@@ -103,6 +103,7 @@ RETRY_MAX_ATTEMPTS = int(os.environ.get('RETRY_MAX_ATTEMPTS', 10))
 RETRY_WAIT_FIXED = int(os.environ.get('RETRY_WAIT_FIXED', 15*60*1000))
 
 CELERY_BROKER_URL = 'redis://'
+CELERY_SEND_TASK_ERROR_EMAILS = True
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -145,10 +146,10 @@ ADMIN = (
     ('Admin', 'code@uniceflabs.org'),
 )
 
-DEFAULT_FROM_EMAIL = 'Data Team<no-reply@data.uniceflabs.org>'
+DEFAULT_FROM_EMAIL = 'Data Team <no-reply@data.uniceflabs.org>'
 EMAIL_HOST = '127.0.0.1'
-EMAIL_HOST_USER = 'no-reply@data.uniceflabs.org'
-SERVER_EMAIL = 'Data Team<no-reply@data.uniceflabs.org>'
+EMAIL_HOST_USER = 'Data Team <no-reply@data.uniceflabs.org>'
+SERVER_EMAIL = 'Data Team <no-reply@data.uniceflabs.org>'
 
 LOGGING = {
     'version': 1,
