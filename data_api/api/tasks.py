@@ -1,6 +1,7 @@
 import logging
 import traceback
 from django.conf import settings
+from django.core.mail import send_mail
 from retrying import retry
 from temba_client.exceptions import TembaConnectionError, TembaBadRequestError, TembaTokenError, \
     TembaRateExceededError, TembaException
@@ -36,6 +37,9 @@ def fail():
 
 @task
 def success():
+    send_mail('celery task success', 'the celery task sent this email',
+              from_email=settings.EMAIL_HOST_USER,
+              recipient_list=['cory.zue@gmail.com'])
     print("Great Success!")
 
 
