@@ -30,6 +30,16 @@ def fetch_entity(entity, org):
 
 
 @task
+def fail():
+    raise Exception("Epic Fail.")
+
+
+@task
+def success():
+    print("Great Success!")
+
+
+@task
 def sync_latest_data(entities=None, orgs=None):
     """
     Syncs the latest data from configured rapidpro Orgs.
