@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 import traceback
-from celery import Celery
+from celery import Celery, signals
 import sys
 
 __author__ = 'kenneth'
@@ -29,4 +29,13 @@ def setup_periodic_tasks(sender, **kwargs):
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
+
+
+@signals.setup_logging.connect
+def setup_celery_logging(**kwargs):
+    print "something"
+    pass
+
+app.log.setup()
+
 app.autodiscover_tasks()
