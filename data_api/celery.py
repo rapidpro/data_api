@@ -31,7 +31,7 @@ app = Celery('data_api')
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     try:
-        from data_api.api.tasks import sync_latest_data
+        from data_api.api.tasks import sync_latest_data, debug
     except Exception:
         # fail hard if something went wrong bootsrapping the tasks
         traceback.print_exc()
@@ -42,6 +42,10 @@ def setup_periodic_tasks(sender, **kwargs):
     update_interval = int(os.environ.get('FETCH_INTERVAL', seconds_in_a_day))
     sender.add_periodic_task(update_interval, sync_latest_data.s(),
                              name='Sync data from RapidPRO every {} seconds'.format(update_interval))
+
+    sender.add_periodic_task(5, debug.s(), name='debug heartbeat')
+
+
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.

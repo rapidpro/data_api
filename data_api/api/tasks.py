@@ -32,6 +32,11 @@ def fetch_entity(entity, org):
 
 
 @task
+def debug():
+    print('celery is alive!')
+
+
+@task
 def sync_latest_data(entities=None, orgs=None):
     """
     Syncs the latest data from configured rapidpro Orgs.
