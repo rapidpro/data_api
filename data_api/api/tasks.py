@@ -33,7 +33,7 @@ def fetch_entity(entity, org):
 
 @task
 def debug():
-    mail_admins('celery is alive!', '')
+    # mail_admins('celery is alive!', '')
     print('celery is alive!')
 
 
