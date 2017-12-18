@@ -43,7 +43,7 @@ def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(60 * 60, sync_latest_data.s(),
                              name='Sync data from RapidPRO every {} seconds'.format(update_interval))
 
-    sender.add_periodic_task(5, debug.s(), name='debug heartbeat')
+    # sender.add_periodic_task(5, debug.s(), name='debug heartbeat')
 
 
 
