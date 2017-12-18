@@ -33,6 +33,7 @@ def fetch_entity(entity, org):
 
 @task
 def debug():
+    mail_admins('Starting RapidPro data sync', '')
     print('celery is alive!')
 
 
