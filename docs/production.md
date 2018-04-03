@@ -36,6 +36,18 @@ though a few changes were made to run it in a virtualenv.
 | Logs | /var/log/supervisor/ |
 
 
+### Running on the command line
+
+The following is required to initialize the right environment to run test (e.g. `manage.py` commands):
+
+```
+$ sudo -u redash bash
+$ source /usr/local/share/virtualenvs/redash/bin/activate
+$ cd /opt/redash/current
+$ source .env
+$ ./manage.py [some command]
+```
+
 ## Mail server
 
 The mail is being routed through a local mail server using `postfix`.
