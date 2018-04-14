@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from mongoengine import connect, Document, StringField, BooleanField, ReferenceField, DateTimeField, IntField, \
     EmbeddedDocument, ListField, EmbeddedDocumentField, DictField, DynamicDocument, FloatField, DynamicField, \
-    MapField, ObjectIdField
+    MapField, ObjectIdField, DoesNotExist
 import pytz
 from rest_framework.authtoken.models import Token
 from temba_client.exceptions import TembaNoSuchObjectError, TembaException
@@ -111,6 +111,12 @@ class LastSaved(DynamicDocument):
     last_saved = DateTimeField()
     last_started = DateTimeField()
     is_running = BooleanField(default=False)
+
+    def get_org_display(self):
+        try:
+            return self.org.name
+        except DoesNotExist:
+            return 'Unknown or Deleted Org'
 
     @classmethod
     def get_for_org_and_collection(cls, org, collection_class):

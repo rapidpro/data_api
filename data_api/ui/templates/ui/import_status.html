@@ -1,0 +1,24 @@
+{% extends 'ui/base.html' %}
+{% block page_content %}
+<table>
+    <thead>
+    <tr>
+        <th>Org</th>
+        <th>Model</th>
+        <th>Last Saved</th>
+        <th>Last Started</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for run in pending_runs %}
+    <tr>
+        <td>{{run.get_org_display}}</td>
+        <td>{{run.coll}}</td>
+        <td>{{run.last_saved}}</td>
+        <td>{{run.last_started}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}

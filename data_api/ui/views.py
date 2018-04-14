@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
+
+from data_api.api.models import LastSaved
 from data_api.api.utils import import_org
 from data_api.ui.forms import OrgForm
 
@@ -25,5 +27,14 @@ def import_org_view(request):
 
     return render(request, 'ui/import_org.html', {
         'form': form,
-        'feedback': feedback
+        'feedback': feedback,
+        'page_title': 'RapidPro: Import Organization',
+    })
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def import_status(request):
+    pending_runs = LastSaved.objects.filter(is_running=True)
+    return render(request, 'ui/import_status.html', {
+        'pending_runs': pending_runs,
     })
