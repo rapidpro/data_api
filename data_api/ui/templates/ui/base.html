@@ -3,9 +3,13 @@
 <head>
     <title>{{ page_title|default:"RapidPro Data Warehouse" }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block page_head %}
+    {% endblock %}
 </head>
 <body>
-{% block page_content %}}
+{% block page_content %}
+{% endblock %}
+{% block page_js %}
 {% endblock %}
 </body>
 </html>
