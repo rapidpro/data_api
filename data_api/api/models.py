@@ -256,13 +256,13 @@ class BaseUtil(object):
         checkpoint = datetime.utcnow()
         if not ls:
             ls = LastSaved.create_for_org_and_collection(org, cls)
-            ls.last_started = checkpoint
-            ls.is_running = True
-            ls.save()
         elif ls.is_running:
             raise ImportRunningException('Import for model {} in org {} still pending!'.format(
                 cls.__name__, org.name,
             ))
+        ls.last_started = checkpoint
+        ls.is_running = True
+        ls.save()
         objs = cls.sync_temba_objects(org, ls, return_objs)
         ls.last_saved = checkpoint
         ls.is_running = False
