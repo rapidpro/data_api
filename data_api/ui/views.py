@@ -37,9 +37,10 @@ def import_org_view(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def import_status(request):
-    pending_runs = LastSaved.objects.filter(is_running=True)
+    pending_runs = LastSaved.objects.filter(is_running=True).order_by('last_started')
     return render(request, 'ui/import_status.html', {
         'pending_runs': pending_runs,
+        'page_title': 'RapidPro: Import Status Page',
     })
 
 
