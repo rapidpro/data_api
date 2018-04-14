@@ -1,5 +1,8 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.core.urlresolvers import reverse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 
 from data_api.api.models import LastSaved
 from data_api.api.utils import import_org
@@ -38,3 +41,13 @@ def import_status(request):
     return render(request, 'ui/import_status.html', {
         'pending_runs': pending_runs,
     })
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@require_POST
+def mark_completed(request, last_saved_id):
+    ls = LastSaved.objects.get(id=last_saved_id)
+    assert ls.last_saved is None
+    ls.is_running = False
+    ls.save()
+    return HttpResponseRedirect(reverse('import_status'))
