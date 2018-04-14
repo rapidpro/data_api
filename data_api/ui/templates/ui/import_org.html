@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Import your Org here</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+{% extends 'ui/base.html' %}
+{% block page_content %}
 <h1>Import your Org Here</h1>
 {% if feedback %}
 <p>{{ feedback|safe }}</p>
@@ -14,7 +9,6 @@
     <table>
         {{ form.as_table }}
     </table>
-    <input type="submit" />
+    <input type="submit"  value="Import Org"/>
 </form>
-</body>
-</html>
+{% endblock %}}
