@@ -309,7 +309,7 @@ class EmbeddedUtil(object):
     @classmethod
     def instantiate_from_temba_list(cls, temba_list):
         obj_list = []
-        for temba in temba_list:
+        for temba in temba_list or []:
             obj_list.append(cls.instantiate_from_temba(temba))
         return obj_list
 
