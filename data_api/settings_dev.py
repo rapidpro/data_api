@@ -44,7 +44,7 @@ LOGGING = {
         'django': {
             'handlers': ['console', 'mail_admins'],
             'propagate': True,
-            'level': 'DEBUG',
+            'level': 'INFO',
         },
         'django.db.backends': {
             'handlers': ['console'],
