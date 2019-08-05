@@ -306,6 +306,7 @@ class Broadcast(OrganizationModel):
         models.CharField(max_length=100),
         default=list
     )
+    status = models.CharField(max_length=100, null=True, blank=True)
     contacts = models.ManyToManyField(Contact)
     groups = models.ManyToManyField(Group)
     text = models.TextField()  # todo: this might need to also support dicts

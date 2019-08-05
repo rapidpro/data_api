@@ -376,12 +376,17 @@ def _get_sort_field(rapidpro_api_object):
 
 def _massage_data(value):
     if _looks_like_a_date_string(value):
-        # mongo strips microseconds so we have to as well.
         # todo: This could be drastically improved.
-        return value[:23]
+        return value[:26]
     return value
 
 
 def _looks_like_a_date_string(value):
     # todo: can make this more advanced as needed
-    return isinstance(value, str) and value.endswith('Z') and (len(value) == 27 or len(value) == 24)
+    supported_formats = '%Y-%m-%dT%H:%M:%S.%f+00:00', '%Y-%m-%dT%H:%M:%S.%fZ'
+    if value and isinstance(value, str):
+        for sf in supported_formats:
+            try:
+                return datetime.strptime(value, sf)
+            except ValueError:
+                pass

@@ -15,8 +15,8 @@
             "restart_participants": true,
             "status": "pending",
             "extra": {"day": "Monday"},
-            "created_on": "2015-08-26T10:04:09.737686Z",
-            "modified_on": "2015-09-26T10:04:09.737686Z"
+            "created_on": "2015-08-26T10:04:09.737686+00:00",
+            "modified_on": "2015-09-26T10:04:09.737686+00:00"
         },
         {
             "uuid": "ed209f7d-ba00-4fb7-af82-e97b3c56842f",
@@ -25,13 +25,13 @@
                 {"uuid": "f5901b62-ba76-4003-9c62-72fdacc1b7b7", "name": "Ryan & Macklemore"}
             ],
             "contacts": [
-                {"uuid": "f5901b62-ba76-4003-9c62-faaed0015553", "name": "Wanz"}
+                {"uuid": "28291a83-157e-45ed-93ef-e0425a065e45", "name": "Wanz"}
             ],
             "restart_participants": false,
             "status": "complete",
             "extra": null,
-            "created_on": "2013-08-19T19:11:21.082Z",
-            "modified_on": "2013-08-19T19:11:21.082Z"
+            "created_on": "2013-08-19T19:11:21.737686+00:00",
+            "modified_on": "2013-08-19T19:11:21.737686+00:00"
         }
     ]
 }
