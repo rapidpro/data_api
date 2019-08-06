@@ -17,7 +17,7 @@ def production():
     env.hosts = ['rapidpro-api.unicef.io']
     env.rapidpro_user = 'rapidpro'
     env.code_dir = '/home/rapidpro/projects/rapidpro_warehouse'
-    env.virtualenv_home = '/home/rapidpro/.virtualenvs/rapidpro-warehouse'
+    env.virtualenv_home = '/home/rapidpro/.virtualenvs/rapidpro_warehouse-4-gga9bH'
     env.supervisor_process_web = 'rapidpro-django'
     env.supervisor_process_celery = None  # celery not setup yet
     env.user = 'dwadmin'
@@ -45,7 +45,12 @@ def deploy(restart_celery=True, user='www-data', git_hash=None):
             _rapidpro_sudo("git pull %s master" % source)
         else:
             _rapidpro_sudo("git checkout %s" % git_hash)
-        _rapidpro_sudo('%s/pipenv install --ignore-pipfile' % workon_home)
+        # required because fabric sudo doesn't seem to support -i option which
+        # we need to get pipenv on the path
+        run("cd {} && sudo -i -u {} pipenv install --ignore-pipfile".format(
+            env.code_dir,
+            env.rapidpro_user)
+        )
         _rapidpro_sudo('%s/python manage.py collectstatic --noinput' % workon_home,
                        environment_vars=django_settings_env)
         _rapidpro_sudo('%s/python manage.py migrate --noinput' % workon_home,
@@ -62,9 +67,15 @@ def _rapidpro_sudo(command, environment_vars=None):
     """
     Runs a command as env.rapidpro_user
     """
-    if environment_vars:
-        command = '{} {}'.format(
-            ' '.join('{}={}'.format(k, v) for k, v in environment_vars.items()),
-            command,
-        )
+    command = '{} {}'.format(
+        _env_to_string(environment_vars),
+        command,
+    )
     sudo(command, user=env.rapidpro_user)
+
+
+def _env_to_string(environment_dict):
+    if environment_dict:
+        return ' '.join('{}={}'.format(k, v) for k, v in environment_dict.items())
+    else:
+        return ''
