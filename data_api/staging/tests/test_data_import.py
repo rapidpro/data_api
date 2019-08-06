@@ -34,9 +34,8 @@ from data_api.staging.models import (
     Runs,
     SyncCheckpoint,
 )
-from data_api.staging.tasks import fetch_entity
+from data_api.staging.tasks import fetch_entity, import_org_with_client
 from data_api.staging.tests.test_utils import get_api_results_from_file
-from data_api.staging.utils import import_org_with_client
 
 
 @patch('temba_client.clients.request')

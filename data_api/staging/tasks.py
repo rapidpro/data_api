@@ -9,6 +9,8 @@ from retrying import retry
 from sentry_sdk import capture_exception
 from temba_client.exceptions import TembaBadRequestError, TembaConnectionError, TembaRateExceededError, TembaTokenError
 
+from data_api.staging.models import Organization
+
 logging.basicConfig(format=settings.LOG_FORMAT)
 logger = logging.getLogger("tasks")
 
@@ -28,6 +30,23 @@ def retry_if_temba_api_or_connection_error(exception):
 def fetch_entity(entity, org, return_objs=False):
     logger.info("Fetching objects of type: %s for Org: %s", str(entity), org.name)
     return entity.sync_all_data(org, return_objs)
+
+
+@task
+def import_org_with_client(client, server, api_key):
+    org = client.get_org()
+    org_dict = org.serialize()
+    org_dict['api_token'] = api_key
+    org_dict['server'] = server
+    org_dict['is_active'] = True
+    try:
+        local_org = Organization.objects.get(api_token=api_key)
+        for k, v in org_dict.items():
+            setattr(local_org, k, v)
+        local_org.save()
+        return local_org
+    except Organization.DoesNotExist:
+        return Organization.objects.create(**org_dict)
 
 
 @task

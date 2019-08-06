@@ -13,6 +13,7 @@ django-extensions = "*"
 [packages]
 Django = "*"
 PyYAML = "*"
+admin-extra-urls = "*"
 amqp = "*"
 anyjson = "*"
 celery = "*"

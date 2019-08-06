@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from temba_client.v2 import TembaClient
 
-from data_api.staging.utils import import_org_with_client
+from data_api.staging.tasks import import_org_with_client
 from data_api.ui.forms import OrgForm
 
 
