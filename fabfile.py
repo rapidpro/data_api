@@ -62,9 +62,15 @@ def _rapidpro_sudo(command, environment_vars=None):
     """
     Runs a command as env.rapidpro_user
     """
-    if environment_vars:
-        command = '{} {}'.format(
-            ' '.join('{}={}'.format(k, v) for k, v in environment_vars.items()),
-            command,
-        )
+    command = '{} {}'.format(
+        _env_to_string(environment_vars),
+        command,
+    )
     sudo(command, user=env.rapidpro_user)
+
+
+def _env_to_string(environment_dict):
+    if environment_dict:
+        return ' '.join('{}={}'.format(k, v) for k, v in environment_dict.items())
+    else:
+        return ''
