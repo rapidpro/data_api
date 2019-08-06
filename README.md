@@ -9,13 +9,13 @@ The current version is based off of the [RapidPro V2 APIs](https://app.rapidpro.
 To import and organization and all its data (once) run:
 
 ```
-./manage.py fetch_all [apikey]
+./manage.py sync_organization_data [apikey]
 ```
 
 or
 
 ```
-./manage.py fetch_all [apikey] --server https://myinstance.rapidpro.io
+./manage.py sync_organization_data [apikey] --server https://myinstance.rapidpro.io
 ```
 
 # Dev Setup / Installation
