@@ -1,6 +1,14 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+
+from admin_extra_urls.extras import action, ExtraUrlMixin
+from temba_client.v2 import TembaClient
 
 from data_api.staging import models
+from data_api.staging.models import Organization
+from data_api.staging.tasks import import_org_with_client, sync_latest_data
 
 
 class SyncCheckpointAdmin(admin.ModelAdmin):
@@ -9,9 +17,22 @@ class SyncCheckpointAdmin(admin.ModelAdmin):
     list_filter = ['is_running', 'organization', 'collection_name', 'last_started', 'last_saved']
 
 
-class OrganizationAdmin(admin.ModelAdmin):
+class OrganizationAdmin(ExtraUrlMixin, admin.ModelAdmin):
     list_display = ['name', 'country', 'is_active', 'server', 'api_token']
     list_filter = ['is_active', 'server']
+
+    @action()
+    def _sync_organization(self, request, pk):
+        organization = get_object_or_404(Organization, pk=pk)
+        client = TembaClient(organization.server, organization.api_token)
+        import_org_with_client.delay(client, organization.server, organization.api_token)
+        return HttpResponseRedirect(reverse('admin:staging_organization_change', args=[organization.pk]))
+
+    @action()
+    def _sync_latest_data(self, request, pk):
+        organization = get_object_or_404(Organization, pk=pk)
+        sync_latest_data.delay(entities=None, orgs=[organization.api_token])
+        return HttpResponseRedirect(reverse('admin:staging_organization_change', args=[organization.pk]))
 
 
 ORG_MODEL_FIELDS = ['organization', 'first_synced', 'last_synced']

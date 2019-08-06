@@ -5,8 +5,7 @@ from django.core.management import BaseCommand
 from temba_client.v2 import TembaClient
 
 from data_api.staging.models import logger as model_logger
-from data_api.staging.tasks import logger as task_logger, sync_latest_data
-from data_api.staging.utils import import_org_with_client
+from data_api.staging.tasks import import_org_with_client, logger as task_logger, sync_latest_data
 
 
 class Command(BaseCommand):

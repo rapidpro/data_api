@@ -2,7 +2,7 @@ from django.core.management import BaseCommand
 
 from temba_client.v2 import TembaClient
 
-from data_api.staging.utils import import_org_with_client
+from data_api.staging.tasks import import_org_with_client
 
 
 class Command(BaseCommand):
