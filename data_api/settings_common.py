@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anymail',
-
+    'admin_extra_urls',
     'data_api.sql_views',
     'data_api.staging',
     'data_api.staging_api',
