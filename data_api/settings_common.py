@@ -221,3 +221,4 @@ DEFAULT_CONTACT_FIELDS = ['uuid', 'age_groups', 'education_level', 'village', 'o
 
 
 LOGIN_URL = '/admin/login/'
+LOGOUT_URL = '/'

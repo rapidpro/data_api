@@ -1,20 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Import your Org here</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-<h1>Import your Org Here</h1>
-{% if feedback %}
-<p>{{ feedback|safe }}</p>
+{% extends "admin/index.html" %}{% load i18n %}
+
+{% block branding %}
+<h1>Management UI</h1>
+{% endblock branding %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+
+        {% if feedback %}
+        <p>{{ feedback|safe }}</p>
+        {% endif %}
+        <h3>Import your Org Here</h3>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+{% if request.user.is_staff and request.user.is_superuser %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>
+            Actions
+        </h2>
+        <table>
+            <tr>
+                <td>Sync Entire Warehouse</td>
+                <td><a target="_blank" href="{% url 'tasks_sync_latest_data' %}" class="addlink">sync</a></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
 {% endif %}
-<form method="post">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" />
-</form>
-</body>
-</html>
+
+{% endblock sidebar %}
