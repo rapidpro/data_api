@@ -1,9 +1,9 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
-from admin_extra_urls.extras import action, ExtraUrlMixin
+from admin_extra_urls.extras import action, ExtraUrlMixin, link
 from temba_client.v2 import TembaClient
 
 from data_api.staging import models
@@ -21,17 +21,25 @@ class OrganizationAdmin(ExtraUrlMixin, admin.ModelAdmin):
     list_display = ['name', 'country', 'is_active', 'server', 'api_token']
     list_filter = ['is_active', 'server']
 
+    @link()
+    def _sync_datawarehouse(self, request):
+        sync_latest_data.delay()
+        messages.add_message(request, messages.INFO, 'Task for Data Warehouse full sync has been scheduled')
+        return HttpResponseRedirect(reverse('admin:staging_organization_changelist'))
+
     @action()
     def _sync_organization(self, request, pk):
         organization = get_object_or_404(Organization, pk=pk)
         client = TembaClient(organization.server, organization.api_token)
         import_org_with_client.delay(client, organization.server, organization.api_token)
+        messages.add_message(request, messages.INFO, f'Task for importing {organization.name} has been scheduled')
         return HttpResponseRedirect(reverse('admin:staging_organization_change', args=[organization.pk]))
 
     @action()
     def _sync_latest_data(self, request, pk):
         organization = get_object_or_404(Organization, pk=pk)
         sync_latest_data.delay(entities=None, orgs=[organization.api_token])
+        messages.add_message(request, messages.INFO, f'Task to sync data for {organization.name} has been scheduled')
         return HttpResponseRedirect(reverse('admin:staging_organization_change', args=[organization.pk]))
 
 
